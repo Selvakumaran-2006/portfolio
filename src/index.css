@@ -1,0 +1,194 @@
+/* User Specified Visual Style & Design System */
+
+:root {
+  --bg-primary: #050816;
+  --bg-secondary: #0B1026;
+  --purple: #8B5CF6;
+  --neon-violet: #A855F7;
+  --blue: #3B82F6;
+  --cyan: #22D3EE;
+  --text-main: #F8FAFC;
+  --text-secondary: #94A3B8;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* Subtle Grid Pattern across background */
+.bg-subtle-grid {
+  background-size: 45px 45px;
+  background-image: 
+    linear-gradient(to right, rgba(139, 92, 246, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+}
+
+/* Purple/Blue Radial Glow Effect */
+.bg-radial-glow {
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(34, 211, 238, 0.18) 0%, transparent 40%);
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(11, 16, 38, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 10px 40px rgba(5, 8, 22, 0.7);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(15, 23, 50, 0.88);
+  border-color: var(--neon-violet);
+  box-shadow: 
+    0 20px 40px -10px rgba(5, 8, 22, 0.9),
+    0 0 30px rgba(168, 85, 247, 0.35);
+  transform: translateY(-5px);
+}
+
+/* Glowing Skill & Project Cards */
+.glowing-card {
+  position: relative;
+  background: rgba(11, 16, 38, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  transition: all 0.35s ease;
+}
+
+.glowing-card:hover {
+  border-color: var(--cyan);
+  box-shadow: 
+    0 0 25px rgba(34, 211, 238, 0.3),
+    0 0 10px rgba(139, 92, 246, 0.4);
+  transform: translateY(-6px);
+}
+
+/* Neon Button Hover Effect */
+.neon-btn {
+  position: relative;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 50%, var(--cyan) 100%);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neon-btn:hover {
+  box-shadow: 
+    0 0 30px rgba(168, 85, 247, 0.6),
+    0 0 45px rgba(34, 211, 238, 0.4);
+  transform: translateY(-2px) scale(1.03);
+  border-color: var(--cyan);
+}
+
+.neon-btn-outline {
+  background: rgba(11, 16, 38, 0.8);
+  color: var(--text-main);
+  border: 1px solid var(--purple);
+  transition: all 0.3s ease;
+}
+
+.neon-btn-outline:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: var(--neon-violet);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+/* Text Reveal Animation */
+@keyframes textReveal {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-text-reveal {
+  animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Floating Illustration & Badges */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(1.5deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(-2deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.06); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Gradient Text Utilities */
+.text-gradient-purple-cyan {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--neon-violet) 40%, var(--blue) 70%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050816;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+  border: 2px solid #050816;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-violet);
+}
+
+/* Physics Canvas Overlay */
+#gravity-canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
