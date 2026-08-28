@@ -179,8 +179,8 @@ app.get('/api/contact/messages', async (req, res) => {
   }
 });
 
-// Catch-all route for single-page React app (serves dist/index.html)
-app.get('*', (req, res) => {
+// Catch-all route for single-page React app (Express v5 compatible)
+app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ success: false, error: 'API route not found' });
   }
