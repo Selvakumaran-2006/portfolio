@@ -3,8 +3,13 @@ import mongoose from 'mongoose';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,20 +18,23 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection Logic with IPv4 / Localhost Fallback
+// Serve static React production build files from 'dist' directory
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// MongoDB Connection Logic with IPv4 / Localhost & Cloud Atlas Fallback
 const connectDatabase = async () => {
   const customUri = process.env.MONGO_URI;
   const connectionOptions = {
-    serverSelectionTimeoutMS: 3000
+    serverSelectionTimeoutMS: 4000
   };
 
   if (customUri) {
     try {
       await mongoose.connect(customUri, connectionOptions);
-      console.log('✅ MongoDB connected successfully to Custom URI! Database:', mongoose.connection.name);
+      console.log('✅ MongoDB connected successfully to MONGO_URI! Database:', mongoose.connection.name);
       return;
     } catch (err) {
-      console.warn('⚠️ MongoDB custom URI connection failed:', err.message);
+      console.warn('⚠️ MongoDB MONGO_URI connection failed:', err.message);
     }
   }
 
@@ -43,7 +51,7 @@ const connectDatabase = async () => {
       return;
     } catch (err2) {
       console.error('⚠️ Could not connect to local MongoDB instance:', err2.message);
-      console.log('💡 Note: Running server in fail-safe mode. Form submissions will still dispatch emails directly to selvakumaran936@gmail.com.');
+      console.log('💡 Note: Running server in fail-safe mode. Web form submissions will dispatch emails to selvakumaran936@gmail.com.');
     }
   }
 };
@@ -67,7 +75,7 @@ const createTransporter = () => {
   const emailPass = process.env.EMAIL_PASS;
 
   if (!emailUser || !emailPass) {
-    console.warn('⚠️ Nodemailer: EMAIL_USER or EMAIL_PASS not set in environment. Mail dispatch will operate via web gateway.');
+    console.warn('⚠️ Nodemailer: EMAIL_USER or EMAIL_PASS not set in environment. Web mail fallback active.');
     return null;
   }
 
@@ -80,7 +88,7 @@ const createTransporter = () => {
   });
 };
 
-// Routes
+// API Routes
 
 // Health Check
 app.get('/api/health', (req, res) => {
@@ -107,7 +115,7 @@ app.post('/api/contact', async (req, res) => {
       savedMsg = await newMessage.save();
       console.log('💾 Message saved to MongoDB:', savedMsg._id);
     } else {
-      console.log('ℹ️ MongoDB not connected. Bypassing database save.');
+      console.log('ℹ️ MongoDB connection not active. Bypassing database save.');
     }
 
     // 2. Dispatch Email via Nodemailer
@@ -171,6 +179,14 @@ app.get('/api/contact/messages', async (req, res) => {
   }
 });
 
+// Catch-all route for single-page React app (serves dist/index.html)
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ success: false, error: 'API route not found' });
+  }
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Portfolio Backend Express Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Portfolio Full-Stack Server running on http://localhost:${PORT}`);
 });
